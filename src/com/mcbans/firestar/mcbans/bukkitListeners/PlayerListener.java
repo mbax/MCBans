@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.net.URLConnection;
 import java.net.URLEncoder;
 
 import com.mcbans.firestar.mcbans.BukkitInterface;
@@ -41,7 +42,10 @@ public class PlayerListener implements Listener {
 			}
 			if(check<=5){
 				URL urlMCBans = new URL("http://"+MCBans.apiServer+"/v2/"+MCBans.getApiKey()+"/login/" + URLEncoder.encode(event.getName(), "UTF-8") + "/" +URLEncoder.encode(String.valueOf(event.getAddress().getHostAddress()), "UTF-8"));
-				BufferedReader bufferedreaderMCBans = new BufferedReader(new InputStreamReader(urlMCBans.openStream()));
+				URLConnection urlConnectionMCBans = urlMCBans.openConnection();
+				urlConnectionMCBans.setConnectTimeout(12000);
+				urlConnectionMCBans.setReadTimeout(12000);
+				BufferedReader bufferedreaderMCBans = new BufferedReader(new InputStreamReader(urlConnectionMCBans.getInputStream()));
 		        String s2 = bufferedreaderMCBans.readLine();
 		        System.out.println(s2);
 				bufferedreaderMCBans.close();
